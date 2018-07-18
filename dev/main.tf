@@ -1,44 +1,23 @@
+#================================================================
+# Provider Declaration
+#================================================================
+
 provider "aws" {
   region = "ap-southeast-1"
 }
 
 #================================================================
-# Create S3 Bucket and DynamoDB
+# Module Calling - Services for Remote State
 #================================================================
 
-resource "aws_s3_bucket" "terraform_state" {
-  bucket = "zero-state"
-
-  versioning {
-    enabled = true
-  }
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-resource "aws_dynamodb_table" "terraform_state_lock" {
-  name           = "zero-state-lock"
-  read_capacity  = 1
-  write_capacity = 1
-  hash_key       = "LockID"
-
-  attribute {
-    name = "LockID"
-    type = "S"
-  }
-}
-
-output "state_result" {
-  value = [
-    "${aws_s3_bucket.terraform_state.bucket_domain_name}",
-    "${aws_dynamodb_table.terraform_state_lock.arn}"
-  ]
+module "services" {
+  source = "../modules/data-storage"
+  s3_bucket_name = "zero-state"
+  dynamodb_tbl_name = "zero-state-lock"
 }
 
 #================================================================
-# Terraform Configuration to Setup State File
+# Terraform Configuration
 #================================================================
 
 terraform {
