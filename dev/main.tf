@@ -13,7 +13,7 @@ provider "aws" {
 module "services" {
   #source = "../modules/data-storage"
   #source = "git::https://github.com/mynoton/projectzero.git//modules/data-storage?ref=master"
-  source = "git::https://github.com/mynoton/projectzero.git//modules/data-storage?ref=v0.0.2"
+  source = "git::https://github.com/mynoton/projectzero.git//modules/data-storage?ref=v0.0.3"
   s3_bucket_id = "terraform_state"
   s3_bucket_name = "zero-state"
   dynamodb_tbl_name = "zero-state-lock"
