@@ -2,7 +2,7 @@
 # Create S3 Bucket and DynamoDB
 #================================================================
 
-resource "aws_s3_bucket" "terraform_state" {
+resource "aws_s3_bucket" "${var.s3_bucket_id}" {
   bucket = "${var.s3_bucket_name}"
 
   versioning {
